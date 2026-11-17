@@ -23,7 +23,8 @@ export const WEDDING = {
   sheetsUrl: '', // URL de tu Apps Script (/exec). Vacía = se envía por WhatsApp
   whatsapp: '59162482430',
   rsvpDeadline: '5 de diciembre',
-  youtubeId: 'xdfik2FRhck', // música de fondo
+  //youtubeId: 'xdfik2FRhck', // música de fondo
+  youtubeId: 'npT_R6QvWvY', // música de fondo
   account: { bank: 'Banco BCP', holder: 'Ruddy & Cinthia', number: '201-51445792-3-27' },
 }
 
