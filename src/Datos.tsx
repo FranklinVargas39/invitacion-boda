@@ -5,9 +5,7 @@
    iglesia, copas, auto, salon, musica, cena, torta, anillos, novio, novia
    ===================================================================== */
 /* eslint-disable react-refresh/only-export-components */
-import novios from './assets/novios.jpeg'
 import novios1 from './assets/novios1.jpeg'
-import novios2 from './assets/novios2.jpeg'
 import foto1 from './assets/foto1.jpg'
 import foto2 from './assets/foto2.jpg'
 import foto3 from './assets/foto3.jpg'
