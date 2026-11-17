@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { VIDEO_FONDO } from './Datos'
 
@@ -12,29 +12,42 @@ export function Flower({ x, y, s = 1, a = '#7fd8d0', b = '#fffaf0' }: { x: numbe
   )
 }
 
-/** Video de fondo (portada y pie): sin audio, en bucle y difuminado.
- *  Reemplaza a la pareja hecha con figuras. */
-export function VideoFondo({ opacity = 0.4, position = 'center' }: { opacity?: number; position?: string }) {
+/** Video de fondo (portada y pie): sin audio, en bucle.
+ *  - Solo se reproduce cuando está en pantalla y `activo` es true (ahorra batería y evita lag).
+ *  - `desenfoque`: pon false si el archivo del video ya viene desenfocado (ffmpeg gblur). */
+export function VideoFondo({ opacity = 0.4, position = 'center', activo = true, desenfoque = true }: { opacity?: number; position?: string; activo?: boolean; desenfoque?: boolean }) {
+  const caja = useRef<HTMLDivElement>(null)
   const ref = useRef<HTMLVideoElement>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = caja.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   useEffect(() => {
     const v = ref.current
     if (!v) return
     v.muted = true // algunos celulares solo permiten autoplay si está muteado por código
-    v.play().catch(() => {})
-  }, [])
+    if (activo && visible) v.play().catch(() => {})
+    else v.pause()
+  }, [activo, visible])
+
   return (
-    <div className="video-fondo-capa pointer-events-none absolute inset-0" aria-hidden>
+    <div ref={caja} className="video-fondo-capa pointer-events-none absolute inset-0" aria-hidden>
       <video
         ref={ref}
         src={VIDEO_FONDO}
-        autoPlay
         muted
         loop
         playsInline
         preload="auto"
         disablePictureInPicture
         className="h-full w-full object-cover"
-        style={{ opacity, objectPosition: position, filter: 'blur(3px) saturate(1.1)', transform: 'scale(1.06)' }}
+        style={{ opacity, objectPosition: position, ...(desenfoque ? { filter: 'blur(3px) saturate(1.1)', transform: 'scale(1.06)' } : {}) }}
       />
     </div>
   )

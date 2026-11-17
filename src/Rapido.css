@@ -1,0 +1,45 @@
+/* =====================================================================
+   RÁPIDO: menos peso para el navegador, sobre todo en celulares.
+   (cargar al final, después de Dorado.css y Fondo.css)
+   ===================================================================== */
+
+/* Cada bloque que aparece al bajar reservaba memoria de la GPU aunque no
+   se estuviera animando. Quitarlo no cambia cómo se ve. */
+.reveal { will-change: auto; }
+
+/* Durante la apertura del sobre, sí conviene que el navegador prepare
+   estas dos piezas como capas propias (se animan sin redibujar todo). */
+.abierto .sobre-solapa,
+.abierto .sobre-carta { will-change: transform; }
+
+@media (max-width: 767px) {
+  /* El desenfoque (blur) en decenas de bloques y palabras es lo que más
+     pesa en un celular: se quita solo ahí, la aparición suave se mantiene. */
+  .reveal,
+  .reveal-blur,
+  .reveal .word { filter: none; }
+
+  /* La textura de papel del sobre (ruido SVG) se repite en 8 capas con 3D */
+  .sobre { --tex: none; }
+
+  /* Sobre: sin flotación continua, sin sombras con blur ni filtros animados */
+  .sobre-flota { animation: none; }
+  .sobre-sombra { filter: none; background: radial-gradient(ellipse at center, rgb(8 70 68 / 0.4), transparent 70%); }
+  .sobre-bolsillo { filter: none; }
+
+  /* Caja de anillos: el brillo animado (drop-shadow) se redibuja en cada
+     cuadro. Con !important se apaga aunque la animación lo pida; el brillo
+     suave sigue en .rb-glow, que es un degradado barato. */
+  .rb-rings,
+  .rb-rings-final,
+  .ring-glow { filter: none !important; }
+
+  /* Menos cosas moviéndose a la vez */
+  .butterfly { display: none; }
+  .spark:nth-child(even) { display: none; }
+  .carta-overlay .petal,
+  span.petal:nth-child(n + 7) { display: none; }
+
+  /* La máscara en el video obliga a redibujarlo aparte en cada cuadro */
+  .video-fondo-capa { mask-image: none; -webkit-mask-image: none; }
+}
