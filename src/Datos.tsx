@@ -13,6 +13,7 @@ import adm1 from './assets/adm1.jpg'
 import adm2 from './assets/adm2.jpg'
 import adm3 from './assets/adm3.jpg'
 import manoVideo from './assets/Mano2.mp4' // si tu video es .webm o .mov, cambia la extensión aquí
+import min2 from './assets/min2.jpg'
 
 export const WEDDING = {
   novio: 'Ruddy',
@@ -112,4 +113,5 @@ export const BANDS = [
   { name: 'Ministerio de Alabanza "ADMIRABLE"', url: adm1 },
   { name: 'Un ministerio con Excelencia!', url: adm2 },
   { name: 'Exaltando a Dios', url: adm3 },
+  { name: 'Rodrigo Condori', url: min2},
 ]
