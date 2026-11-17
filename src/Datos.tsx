@@ -62,9 +62,9 @@ export const PARENTS = [
 ]
 
 export const STORY = [
-  { year: '2024', title: 'Dios cruzó nuestros caminos', text: 'Sin imaginarlo, Dios tenía preparado un encuentro que cambiaría nuestras vidas para siempre.' },
-  { year: '2024', title: 'Creciendo en amor y fe', text: 'Entre sonrisas, oraciones y momentos especiales, descubrimos que juntos podíamos caminar de la mano de Dios.' },
-  { year: '2024', title: 'Un mismo propósito', text: 'Nuestros corazones comenzaron a soñar con un futuro, poniendo cada paso en las manos del Señor.' },
+  { year: '2025', title: 'Dios cruzó nuestros caminos', text: 'Sin imaginarlo, Dios tenía preparado un encuentro que cambiaría nuestras vidas para siempre.' },
+  { year: '2025', title: 'Creciendo en amor y fe', text: 'Entre sonrisas, oraciones y momentos especiales, descubrimos que juntos podíamos caminar de la mano de Dios.' },
+  { year: '2025', title: 'Un mismo propósito', text: 'Nuestros corazones comenzaron a soñar con un futuro, poniendo cada paso en las manos del Señor.' },
   { year: '2025', title: 'Un sí ante Dios', text: 'Con amor, fe y gratitud, decidimos unir nuestras vidas y construir juntos una historia bajo su bendición.' },
 ]
 
