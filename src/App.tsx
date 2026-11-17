@@ -1,28 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Carta from './Carta'
 import { ScrollProgress, Nav, FloatingButtons } from './Ui'
 import { WEDDING } from './Datos'
-import { Hero, Marquee, Countdown, Interlude, Story, Details, Where, Schedule, Padrinos, DressCode, Gallery, Bands, Gifts, Rsvp, Footer } from './Contenido'
+import { useMusica } from './Musica'
+import { Hero, Marquee, Story, Details, Schedule, Padrinos, DressCode, Gallery, Bands, Rsvp, Footer } from './Contenido'
+import { Interlude, Where } from './Mejorado'
+import './Mejoras.css'
+import './Dorado.css'
+import './Sueve.css'
+import { Countdown } from './Cronometro'
 
 export default function App() {
   // Enlace personalizado: https://tu-sitio.com/?invitado=Familia%20Pérez
   const guest = useMemo(() => new URLSearchParams(window.location.search).get('invitado') ?? '', [])
-  const ytRef = useRef<HTMLIFrameElement>(null)
-  const [playing, setPlaying] = useState(false)
   const [cartaCerrada, setCartaCerrada] = useState(false)
-  const [heroListo, setHeroListo] = useState(false) // la portada anima sus nombres cuando la carta se despide
+  const [heroListo, setHeroListo] = useState(false)
 
-  const cmd = (func: string) => ytRef.current?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args: '' }), '*')
-  const play = () => { cmd('unMute'); cmd('playVideo'); setPlaying(true) }
-  const toggle = () => { if (playing) { cmd('pauseVideo'); setPlaying(false) } else play() }
+  const { host, playing, play, toggle, error } = useMusica(WEDDING.youtubeId)
 
-  // Se llama al abrir la carta: la animación de la carta dura ~7,7 s antes de despedirse
   const alAbrir = () => {
     play()
     window.setTimeout(() => setHeroListo(true), 7700)
   }
 
-  // Destellos sutiles que siguen al mouse y estrellitas al hacer clic (solo con mouse)
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches) return
     let last = 0
@@ -54,7 +54,9 @@ export default function App() {
       {!cartaCerrada && <Carta guest={guest} onOpen={alAbrir} onClose={() => { setCartaCerrada(true); setHeroListo(true); window.scrollTo(0, 0) }} />}
       <ScrollProgress />
       <Nav />
-      <iframe ref={ytRef} title="Música de la invitación" aria-hidden tabIndex={-1} className="pointer-events-none fixed -left-[9999px] top-0 h-px w-px opacity-0" src={`https://www.youtube.com/embed/${WEDDING.youtubeId}?enablejsapi=1&loop=1&playlist=${WEDDING.youtubeId}&controls=0&playsinline=1`} allow="autoplay; encrypted-media" />
+      {/* reproductor de música (fuera de la vista, pero de tamaño real para que YouTube no lo bloquee) */}
+      <div ref={host} aria-hidden className="pointer-events-none fixed -left-[300px] bottom-0 h-[220px] w-[220px] overflow-hidden" />
+      {import.meta.env.DEV && error !== null && <p className="fixed bottom-20 left-4 z-[200] max-w-xs rounded-xl bg-coral px-4 py-3 font-body text-sm text-white shadow-xl">La música no se puede reproducir (código {error}). Si es 101 o 150, ese video no permite incrustarse: usa otro en youtubeId (Datos.ts).</p>}
       <FloatingButtons playing={playing} toggle={toggle} />
       <main>
         <Hero guest={guest} entered={heroListo} />
@@ -69,7 +71,6 @@ export default function App() {
         <DressCode />
         <Gallery />
         <Bands />
-        <Gifts />
         <Rsvp guest={guest} />
       </main>
       <Footer />

@@ -1,0 +1,73 @@
+/* =====================================================================
+   CUENTA REGRESIVA: reloj de arena elegante + hora debajo
+   (en celular: reloj de arena al lado de la hora)
+   ===================================================================== */
+.reloj-escena { position: relative; display: flex; justify-content: center; padding: 0.5rem 0 0; }
+.reloj-halo { position: absolute; left: 50%; top: 46%; width: min(88vw, 440px); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgb(127 216 208 / 0.3), rgb(230 207 148 / 0.14) 55%, transparent 70%); }
+.reloj-halo::before { content: ""; position: absolute; inset: 5%; border-radius: 50%; border: 1px dashed rgb(201 162 75 / 0.65); animation: reloj-giro 80s linear infinite; }
+.reloj-halo::after { content: ""; position: absolute; inset: 13%; border-radius: 50%; border: 1px solid rgb(201 162 75 / 0.28); }
+@keyframes reloj-giro { to { transform: rotate(360deg); } }
+
+.reloj-svg { position: relative; width: min(62vw, 270px); height: auto; overflow: visible; filter: drop-shadow(0 22px 22px rgb(14 124 123 / 0.22)); animation: reloj-flota 8s ease-in-out infinite; }
+@keyframes reloj-flota { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* hilo de arena y granos que caen por el cuello */
+.arena-hilo { stroke-dasharray: 3 3; animation: arena-fluye 0.5s linear infinite; }
+@keyframes arena-fluye { to { stroke-dashoffset: -6; } }
+.arena-grano { opacity: 0; animation: arena-cae 0.9s linear infinite; animation-delay: var(--d, 0s); }
+@keyframes arena-cae {
+  0% { transform: translate(0, 0); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translate(var(--x, 0px), var(--fall, 120px)); opacity: 0.9; }
+}
+
+/* chispas doradas alrededor */
+.rt-chispa { position: absolute; width: 8px; height: 8px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, #fffbe8 0, #e6cf94 45%, transparent 72%); animation: rt-brilla 3.6s ease-in-out var(--d, 0s) infinite; }
+@keyframes rt-brilla { 0%, 100% { opacity: 0.1; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
+
+/* contenedor: en escritorio se apilan (reloj arriba, hora abajo) */
+.rt-layout { display: block; }
+
+/* panel con la hora: doble marco dorado, como papel de invitación */
+.rt-panel { position: relative; margin: 1.25rem auto 0; max-width: 40rem; padding: 1.7rem 1rem 1.4rem; text-align: center; border-radius: 1.5rem;
+  background: rgb(255 255 255 / 0.74); backdrop-filter: blur(8px); border: 1px solid rgb(201 162 75 / 0.65);
+  outline: 1px solid rgb(201 162 75 / 0.35); outline-offset: -8px; box-shadow: 0 26px 50px -28px rgb(14 124 123 / 0.5); }
+.rt-fila { display: flex; align-items: flex-start; justify-content: center; gap: clamp(0.2rem, 2.2vw, 1.1rem); }
+.rt-unidad { display: flex; flex-direction: column; align-items: center; min-width: clamp(3.1rem, 15vw, 6rem); }
+.rt-num {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: clamp(2.1rem, 9vw, 4.4rem); line-height: 1; font-variant-numeric: tabular-nums;
+  background: linear-gradient(100deg, #7a5a10, #b8902f 25%, #e8cd7e 48%, #b8902f 65%, #7a5a10); -webkit-background-clip: text; background-clip: text; color: transparent;
+  transform-origin: 50% 0; animation: rt-giro 0.6s cubic-bezier(0.34, 1.3, 0.5, 1) both;
+}
+@keyframes rt-giro { from { transform: perspective(420px) rotateX(-80deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.rt-et { margin-top: 0.55rem; font-family: var(--font-body); font-size: clamp(0.55rem, 2.2vw, 0.75rem); letter-spacing: 0.32em; text-transform: uppercase; color: #8f6a17; padding-left: 0.32em; }
+.rt-sep { display: flex; flex-direction: column; gap: 0.5em; margin-top: clamp(0.8rem, 3.4vw, 1.7rem); }
+.rt-sep i { display: block; width: 5px; height: 5px; border-radius: 50%; background: #c9a24b; animation: rt-parpadeo 2s ease-in-out infinite; }
+@keyframes rt-parpadeo { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+.rt-filete { position: relative; height: 14px; width: min(70%, 260px); margin: 1.2rem auto 0.6rem; background: linear-gradient(90deg, transparent, #c9a24b 30%, #c9a24b 70%, transparent) center / 100% 1px no-repeat; }
+.rt-filete::after { content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; background: #c9a24b; transform: translate(-50%, -50%) rotate(45deg); }
+.rt-fecha { font-family: var(--font-display); font-style: italic; color: #8f6a17; font-size: clamp(1rem, 3.6vw, 1.35rem); }
+
+/* =====================================================================
+   CELULAR: reloj de arena al lado de la hora
+   ===================================================================== */
+@media (max-width: 639px) {
+  .rt-layout { display: flex; flex-direction: row; align-items: center; gap: 0.6rem; }
+  .rt-izq { flex: 0 0 34%; min-width: 0; }
+  .rt-der { flex: 1 1 0; min-width: 0; }
+
+  .reloj-escena { padding: 0; }
+  .reloj-halo { width: 100%; }
+  .reloj-svg { width: 100%; max-width: 130px; }
+
+  .rt-panel { margin: 0; padding: 1rem 0.4rem 0.9rem; outline-offset: -5px; border-radius: 1.1rem; }
+  .rt-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem 0.3rem; }
+  .rt-sep { display: none; }
+  .rt-unidad { min-width: 0; }
+  .rt-num { font-size: clamp(1.6rem, 8vw, 2.2rem); }
+  .rt-et { font-size: 0.5rem; letter-spacing: 0.18em; padding-left: 0.18em; margin-top: 0.3rem; }
+  .rt-filete { margin: 0.8rem auto 0.4rem; width: 80%; }
+  .rt-fecha { font-size: 0.78rem; line-height: 1.25; }
+}

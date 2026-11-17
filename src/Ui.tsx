@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import type { CSSProperties, MouseEvent, ReactNode, RefObject, TouchEvent } from 'react'
 import { WEDDING, IGLESIA } from './Datos'
 import { Flower } from './Arte'
+import { Icono } from './Iconos'
 
 /* =====================================================================
    HOOKS
@@ -221,11 +222,11 @@ export function ScrollProgress() {
 
 export function FloatingButtons({ playing, toggle }: { playing: boolean; toggle: () => void }) {
   const share = () => window.open(`https://wa.me/?text=${encodeURIComponent(`¡Estás invitado a la boda de ${WEDDING.novio} y ${WEDDING.novia}! ${window.location.href}`)}`, '_blank')
-  const base = 'flex h-12 w-12 items-center justify-center rounded-full border border-turquesa/60 bg-white text-xl text-turquesa-deep shadow-xl transition-all hover:scale-110 hover:bg-turquesa hover:text-white'
+  const base = 'flex h-12 w-12 items-center justify-center rounded-full border border-turquesa/60 bg-white text-turquesa-deep shadow-xl transition-all hover:scale-110 hover:bg-turquesa hover:text-white'
   return (
     <div className="fixed bottom-5 right-5 z-[70] flex flex-col gap-3">
-      <button onClick={share} className={base} aria-label="Compartir por WhatsApp">↗</button>
-      <button onClick={toggle} className={`${base} ${playing ? 'animate-pulse-ring' : ''}`} aria-label={playing ? 'Pausar música' : 'Reproducir música'}>{playing ? '❚❚' : '♪'}</button>
+      <button onClick={share} className={base} aria-label="Compartir por WhatsApp"><Icono name="compartir" dorado={false} className="h-5 w-5" /></button>
+      <button onClick={toggle} className={`${base} ${playing ? 'animate-pulse-ring' : ''}`} aria-label={playing ? 'Pausar música' : 'Reproducir música'}><Icono name={playing ? 'pausa' : 'musica'} dorado={false} className="h-5 w-5" grosor={playing ? 2.5 : 1.75} /></button>
     </div>
   )
 }

@@ -1,5 +1,6 @@
-import { useId, useMemo } from 'react'
+import { useEffect, useId, useMemo, useRef } from 'react'
 import type { CSSProperties } from 'react'
+import { VIDEO_FONDO } from './Datos'
 
 export function Flower({ x, y, s = 1, a = '#7fd8d0', b = '#fffaf0' }: { x: number; y: number; s?: number; a?: string; b?: string }) {
   return (
@@ -11,7 +12,35 @@ export function Flower({ x, y, s = 1, a = '#7fd8d0', b = '#fffaf0' }: { x: numbe
   )
 }
 
-/** Pareja bajo un arco de flores, con los anillos arriba */
+/** Video de fondo (portada y pie): sin audio, en bucle y difuminado.
+ *  Reemplaza a la pareja hecha con figuras. */
+export function VideoFondo({ opacity = 0.4, position = 'center' }: { opacity?: number; position?: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const v = ref.current
+    if (!v) return
+    v.muted = true // algunos celulares solo permiten autoplay si está muteado por código
+    v.play().catch(() => {})
+  }, [])
+  return (
+    <div className="video-fondo-capa pointer-events-none absolute inset-0" aria-hidden>
+      <video
+        ref={ref}
+        src={VIDEO_FONDO}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        className="h-full w-full object-cover"
+        style={{ opacity, objectPosition: position, filter: 'blur(3px) saturate(1.1)', transform: 'scale(1.06)' }}
+      />
+    </div>
+  )
+}
+
+/** Pareja bajo un arco de flores, con los anillos arriba (ya no se usa en la portada ni en el pie) */
 export function CoupleArt({ className = '', variant = 'gold' }: { className?: string; variant?: 'gold' | 'dark' }) {
   const id = useId().replace(/:/g, '')
   const fill = variant === 'gold' ? `url(#g${id})` : '#0b6563'

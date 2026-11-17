@@ -1,0 +1,123 @@
+/* =====================================================================
+   CAJITA DE MADERA (nogal) con nombres en oro e interior de terciopelo negro.
+   Se abre por la mitad: la tapa se levanta y salen los anillos.
+   ===================================================================== */
+
+.caja-escena { position: relative; width: 300px; height: 380px; }
+@media (max-width: 380px) { .caja-escena { transform: scale(0.86); margin: -26px 0; } }
+
+.caja-3d { position: absolute; inset: 0; animation: caja-entra 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both; }
+@keyframes caja-entra { from { opacity: 0; transform: translateY(30px) scale(0.88); } to { opacity: 1; transform: none; } }
+
+/* Plano de la caja, inclinado para verla desde arriba */
+.caja-plano {
+  position: absolute; left: 50%; bottom: 34px; width: 200px; height: 200px; margin-left: -100px;
+  transform-style: preserve-3d; transform: perspective(900px) rotateX(44deg);
+}
+.caja-sombra { position: absolute; inset: -6px; border-radius: 24px; background: rgb(0 0 0 / 0.45); filter: blur(16px); }
+
+/* ---------- Madera de nogal ---------- */
+.caja-madera {
+  background:
+    repeating-linear-gradient(94deg, rgb(60 30 10 / 0.16) 0 1.5px, transparent 1.5px 9px),
+    repeating-linear-gradient(88deg, rgb(255 210 150 / 0.07) 0 3px, transparent 3px 17px),
+    radial-gradient(120% 90% at 30% 20%, #a46d3e, #7a4a26 55%, #5b3519);
+  box-shadow: inset 0 0 0 2px rgb(255 220 170 / 0.2), inset 0 0 24px rgb(0 0 0 / 0.38), 0 1px 0 rgb(0 0 0 / 0.4);
+}
+.caja-frente-madera {
+  background:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.1) 0 1.5px, transparent 1.5px 8px),
+    linear-gradient(180deg, #6a3f20, #432612);
+  border-radius: 0 0 14px 14px;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+
+/* ---------- Base ---------- */
+.caja-base { position: absolute; inset: 0; border-radius: 16px; transform: translateZ(30px); transform-style: preserve-3d; }
+.caja-base-frente { position: absolute; left: 0; top: 100%; width: 100%; height: 30px; transform-origin: top; transform: rotateX(-90deg); }
+/* botoncito de cierre, como en la foto */
+.caja-base-frente::after {
+  content: ""; position: absolute; left: 50%; top: 9px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #e6dcc8 60%, #b9ab8c); box-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+/* Interior de terciopelo negro con dos ranuras */
+.caja-pozo {
+  position: absolute; inset: 15px; border-radius: 10px;
+  background: radial-gradient(120% 120% at 50% 30%, #262626, #060606);
+  box-shadow: inset 0 0 16px #000, inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+.caja-ranura { position: absolute; left: 10px; right: 10px; height: 68px; border-radius: 8px; background: linear-gradient(180deg, #000, #141414); box-shadow: inset 0 3px 6px #000, 0 1px 0 rgb(255 255 255 / 0.07); }
+.caja-ranura.r1 { top: 12px; }
+.caja-ranura.r2 { bottom: 12px; }
+
+/* Anillos acostados dentro de la caja (se desvanecen cuando salen los reales) */
+.caja-aro {
+  position: absolute; left: 50%; width: 56px; height: 56px; margin-left: -28px; border-radius: 50%;
+  border: 8px solid #d9a93d; border-top-color: #f6dc8a; border-left-color: #f1cf70; border-bottom-color: #9a6a17;
+  box-shadow: 0 3px 5px rgb(0 0 0 / 0.6), inset 0 2px 3px rgb(0 0 0 / 0.45), inset 0 0 0 1px rgb(255 240 190 / 0.4);
+  animation: caja-aro-fuera 0.5s ease 2s forwards;
+}
+.caja-aro.a1 { top: 18px; }
+.caja-aro.a2 { top: 96px; }
+.caja-aro.a1::after {
+  content: ""; position: absolute; left: 50%; top: -10px; width: 11px; height: 11px; margin-left: -5.5px; transform: rotate(45deg);
+  background: linear-gradient(135deg, #fff, #bfeaf5); box-shadow: 0 0 10px 2px rgb(255 255 255 / 0.9);
+}
+@keyframes caja-aro-fuera { to { opacity: 0; } }
+
+/* ---------- Tapa (bisagra en el borde de atrás) ---------- */
+.caja-tapa {
+  position: absolute; inset: 0; transform-origin: 50% 0; transform-style: preserve-3d;
+  transform: translateZ(30px) rotateX(0deg);
+  animation: caja-abre 1.3s cubic-bezier(0.45, 0, 0.2, 1) 0.9s both;
+}
+@keyframes caja-abre {
+  from { transform: translateZ(30px) rotateX(0deg); }
+  75% { transform: translateZ(30px) rotateX(110deg); }
+  to { transform: translateZ(30px) rotateX(104deg); }
+}
+.caja-tapa-fuera, .caja-tapa-dentro { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.caja-tapa-frente { position: absolute; left: 0; top: 100%; width: 100%; height: 30px; transform-origin: top; transform: translateZ(30px) rotateX(-90deg); }
+
+/* Cara de arriba: nombres grabados en oro */
+.caja-tapa-fuera {
+  transform: translateZ(30px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center;
+}
+.caja-tapa-fuera::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(120deg, rgb(255 255 255 / 0.18), transparent 38%, transparent 70%, rgb(255 255 255 / 0.06));
+}
+.caja-grabado { color: #f0d58a; text-shadow: 0 -1px 0 rgb(0 0 0 / 0.6), 0 1px 0 rgb(255 225 150 / 0.25), 0 0 8px rgb(240 200 100 / 0.25); }
+.caja-monograma {
+  display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%;
+  border: 1.5px solid #e6c46a; box-shadow: 0 0 0 3px rgb(0 0 0 / 0.12), inset 0 0 8px rgb(0 0 0 / 0.3);
+  font-family: var(--font-script); font-size: 1.35rem; line-height: 1;
+}
+.caja-nombres { font-family: var(--font-script); font-size: 1.85rem; line-height: 1.1; white-space: nowrap; }
+.caja-fecha { font-family: var(--font-body); font-size: 0.56rem; letter-spacing: 0.32em; text-transform: uppercase; padding-left: 0.32em; }
+
+/* Cara de adentro: madera con terciopelo negro (se ve al abrir) */
+.caja-tapa-dentro { transform: translateZ(1px) rotateY(180deg); }
+.caja-tapa-dentro::after {
+  content: ""; position: absolute; inset: 15px; border-radius: 10px;
+  background: radial-gradient(120% 120% at 50% 30%, #262626, #060606);
+  box-shadow: inset 0 0 16px #000, inset 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+/* ---------- Anillos que salen de la caja ---------- */
+.caja-anillos {
+  position: absolute; left: 50%; bottom: 46px; width: 270px; margin-left: -135px; opacity: 0; transform-origin: 50% 70%;
+  filter: drop-shadow(0 0 16px rgb(255 245 200 / 0.85)) drop-shadow(0 10px 12px rgb(0 0 0 / 0.35));
+  animation: caja-sale 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.9s both, caja-flota 5s ease-in-out 3.4s infinite;
+}
+@keyframes caja-sale {
+  0% { opacity: 0; transform: translateY(40px) scale(0.32); }
+  25% { opacity: 1; }
+  100% { opacity: 1; transform: translateY(-150px) scale(1); }
+}
+@keyframes caja-flota {
+  0%, 100% { transform: translateY(-150px) scale(1) rotate(0deg); }
+  50% { transform: translateY(-160px) scale(1) rotate(0.8deg); }
+}

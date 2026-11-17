@@ -1,0 +1,34 @@
+/* =====================================================================
+   FONDOS SUAVES: menta muy clara + marfil, para que el dorado y el turquesa
+   resalten sin cansar la vista.
+   (cargar al final, después de Dorado.css)
+   ===================================================================== */
+:root {
+  --fondo-pagina: #edf6f3;      /* detrás de todo */
+  --fondo-claro: #f4faf8;       /* secciones "blancas" */
+  --fondo-menta: #e2f0ec;       /* secciones alternas */
+  --fondo-menta-hondo: #cfe6e0; /* final de degradados */
+  --marfil: #fffdf8;            /* tarjetas y formularios: papel de invitación */
+}
+
+body { background: var(--fondo-pagina); }
+
+/* Secciones: se alternan claro / menta suave */
+section.bg-white { background-color: var(--fondo-claro); }
+section.bg-hueso { background-color: var(--fondo-menta); }
+
+/* Portada, carta de entrada y pie: degradado suave de arriba hacia abajo */
+#inicio,
+.carta-overlay,
+footer {
+  background-image: linear-gradient(to bottom, #f7fcfa 0%, var(--fondo-menta) 55%, var(--fondo-menta-hondo) 100%);
+}
+
+/* Tarjetas, formularios y botones claros: marfil cálido en vez de blanco puro.
+   Así los marcos y letras doradas se ven más ricos sobre ellos. */
+.bg-white { background-color: var(--marfil); }
+.bg-white\/70 { background-color: rgb(255 253 248 / 0.72); }
+.bg-white\/90 { background-color: rgb(255 253 248 / 0.92); }
+
+/* Hoja de la carta del sobre: papel marfil */
+.sobre-carta { background: var(--tex), linear-gradient(180deg, #fffdf8, #f1f7f4); }

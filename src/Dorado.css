@@ -1,0 +1,125 @@
+/* =====================================================================
+   JUEGO DE COLORES: TURQUESA + ORO
+   Regla: los títulos y textos de apoyo se quedan turquesa; el ORO se usa
+   solo en lo importante (nombres, fecha, horas, números, citas, marcos).
+   (cargar DESPUÉS de index.css, Mejoras.css y Animaciones.css)
+   ===================================================================== */
+:root {
+  --oro: linear-gradient(100deg, #7a5a10 0%, #b8902f 25%, #e0c36e 45%, #b8902f 62%, #7a5a10 82%, #c9a24b 100%);
+  --oro-claro: #e6cf94;
+  --oro-medio: #c9a24b;
+  --oro-hondo: #8f6a17;
+}
+::selection { background: rgb(201 162 75 / 0.35); }
+
+/* ---------------------------------------------------------------------
+   ORO EN EL TEXTO (lámina de oro con brillo)
+   --------------------------------------------------------------------- */
+
+/* Para usar en cualquier palabra suelta:  <span className="dorado">importante</span> */
+.dorado, .oro-texto, .oro-vivo {
+  background: var(--oro); background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.dorado, .oro-vivo { animation: shimmer 7s linear infinite; }
+
+/* Portada: las letras del inicio (¡Nos casamos!, frase, nombres, fecha y hora)
+   se quedan en su color turquesa original; solo los bordes llevan oro. */
+
+/* Nombres de los novios en la frase, en el pie y en la carta del sobre */
+p.font-script .gold-text,
+.sobre-carta .gold-text,
+.reveal.mt-10 > p.font-script {
+  background: var(--oro); background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 7s linear infinite;
+}
+
+/* Cosas importantes: horas, números de la cuenta regresiva, mes del calendario,
+   años de la historia, citas bíblicas y el hashtag */
+:is(#cuenta p.font-script, #cuenta .animate-pop, #historia span.font-script, p.font-display.font-semibold, .verso p.uppercase, footer p.tracking-widest) {
+  background: var(--oro); background-size: 250% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmer 8s linear infinite;
+}
+
+/* Todo lo demás (títulos de sección, subtítulos, tarjetas, lugares, etiquetas)
+   se queda en su turquesa original: aquí NO se toca nada. */
+
+/* ---------------------------------------------------------------------
+   ORO EN MARCOS, LÍNEAS Y DETALLES (acentos, no letras)
+   --------------------------------------------------------------------- */
+/* doble marco dorado dentro de las tarjetas, como papel de invitación */
+div.shine { outline: 1px solid rgb(201 162 75 / 0.55); outline-offset: -9px; transition: outline-color 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease; }
+div.shine:hover { outline-color: rgb(201 162 75 / 0.95); }
+/* marcos degradados (cuenta regresiva y calendario): turquesa + oro */
+[class*="p-[1.5px]"] { background-image: linear-gradient(135deg, #7fd8d0 0%, #e6cf94 32%, #c9a24b 55%, #1fb5ad 100%); }
+/* separadores: líneas doradas y centro de las flores dorado */
+.reveal .grow-line.origin-right { background-image: linear-gradient(90deg, transparent, #c9a24b); }
+.reveal .grow-line.origin-left { background-image: linear-gradient(270deg, transparent, #c9a24b); }
+circle[fill="#0e8f8b"] { fill: #c9a24b; }
+/* destellos dorados */
+.spark { background: radial-gradient(circle, #fffbe8 0, #e6cf94 45%, rgb(201 162 75 / 0) 72%); }
+.sparkle { background: radial-gradient(circle, #fff 0, #e6cf94 40%, transparent 70%); }
+.star-burst { color: #c9a24b; }
+/* fondo de papel con brillos dorados en las esquinas */
+.paper {
+  background-image:
+    radial-gradient(circle at 10% 12%, rgb(127 216 208 / 0.22), transparent 38%),
+    radial-gradient(circle at 90% 88%, rgb(205 241 236 / 0.35), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgb(230 207 148 / 0.24), transparent 30%),
+    radial-gradient(circle at 6% 94%, rgb(230 207 148 / 0.2), transparent 30%);
+}
+
+.marquee { color: #f3e1a0; text-shadow: 0 0 12px rgb(201 162 75 / 0.5); }
+div.bg-turquesa-deep.overflow-hidden { border-block: 2px solid #c9a24b; }
+div.fixed.left-0.top-0.h-1 { background-image: linear-gradient(90deg, #7fd8d0, #1fb5ad, #e6cf94, #c9a24b); }
+.fixed.bottom-5.right-5 > button { border-color: #c9a24b; }
+div.rounded-full.border-2.border-turquesa-soft { border-color: #c9a24b; }
+
+span.story-dot { border-color: #c9a24b; }
+span.story-dot.in { background: #c9a24b; box-shadow: 0 0 0 9px rgb(201 162 75 / 0.28); }
+span.story-dot.in::after { border-color: #c9a24b; }
+
+#inicio .animate-float.rounded-full { background-image: linear-gradient(135deg, #e6cf94, #ffffff, #c9a24b); }
+#inicio .animate-float.rounded-full::before { background: conic-gradient(from 0deg, #e6cf94, #ffffff, #7fd8d0, #c9a24b, #e6cf94); }
+
+/* Fecha de la portada: marco dorado */
+#inicio div.inline-flex { border-color: #c9a24b; }
+#inicio div.inline-flex > span.border-x { border-color: #c9a24b; background: rgb(201 162 75 / 0.14); }
+
+/* Marco de la portada y tallos de las esquinas florales en oro */
+rect[stroke="#1fb5ad"] { stroke: #c9a24b; }
+path[stroke="#1fb5ad"][stroke-width="2"] { stroke: #c9a24b; }
+
+/* Botones turquesa con filo dorado */
+a.inline-block.rounded-full { box-shadow: 0 0 0 1.5px #fff, 0 0 0 3px #c9a24b, 0 10px 22px -8px rgb(14 124 123 / 0.45); }
+button[type="submit"] { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #c9a24b, 0 12px 26px -8px rgb(14 124 123 / 0.5); }
+
+/* Versículos y formulario: doble marco dorado */
+.verso, form.rounded-3xl, div.animate-pop.rounded-3xl { border-color: rgb(201 162 75 / 0.6); outline: 1px solid rgb(201 162 75 / 0.45); outline-offset: -8px; }
+
+/* Fotos de la galería: borde dorado claro */
+#galeria button { border-color: #f1e2b3; }
+
+/* Selector de lugar (Ceremonia / Recepción) */
+div[role="tablist"] { border-color: #c9a24b; }
+div[role="tablist"] button[aria-selected="true"] { background: linear-gradient(135deg, #1fb5ad, #0e7c7b); box-shadow: 0 0 0 1.5px #c9a24b; }
+
+/* La carta del sobre: marco, sello y filete dorados */
+.sobre-carta::after { border-color: rgb(201 162 75 / 0.65); }
+.sello::before { border-color: rgb(230 207 148 / 0.9); }
+.sello { box-shadow: inset 0 2px 3px rgb(255 255 255 / 0.5), inset 0 -5px 7px rgb(0 0 0 / 0.35), 0 0 0 2px #c9a24b, 0 9px 16px rgb(0 0 0 / 0.35); }
+.carta-filete { display: block; width: 64px; height: 2px; margin: 6px auto; background: var(--oro); }
+
+/* tarjeta de la cuenta bancaria: como una tarjeta con chip dorado */
+#regalos .rounded-3xl.overflow-hidden { box-shadow: inset 0 0 0 1.5px rgb(240 220 156 / 0.85), 0 30px 60px -20px rgb(14 124 123 / 0.5); }
+#regalos .rounded-3xl.overflow-hidden::before {
+  content: ""; position: absolute; right: 26px; top: 24px; width: 46px; height: 34px; border-radius: 7px;
+  background: linear-gradient(135deg, #f6e7b0, #c9a24b 60%, #8f6a17); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4);
+}
+#regalos .rounded-3xl p.italic { color: #f6e7b0; }
+#regalos .rounded-3xl p.font-mono { color: #fff4cf; text-shadow: 0 1px 0 rgb(0 0 0 / 0.25), 0 0 14px rgb(201 162 75 / 0.5); }
+
+/* ---------- Video de fondo (portada y pie) ---------- */
+.video-fondo-capa { mask-image: radial-gradient(ellipse at center, #000 55%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse at center, #000 55%, transparent 100%); }

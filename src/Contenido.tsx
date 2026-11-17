@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, FormEvent } from 'react'
-import { Ambient, CoupleArt, FloralCorner, Petals } from './Arte'
+import { Ambient, FloralCorner, Petals, VideoFondo } from './Arte'
+import { Icono } from './Iconos'
 import { Reveal, Tilt, Divider, SectionTitle, Seccion, Words, Lightbox, useReveal, useCountdown, useScrollVar, launchConfetti, downloadICS, card, btn } from './Ui'
 import { WEDDING, IGLESIA, SALON, SCHEDULE, GODPARENTS, PARENTS, STORY, PALETTE, GALLERY, BANDS, PORTADA, FOTOS_IGLESIA, FOTOS_SALON } from './Datos'
 import type { Ev } from './Datos'
@@ -24,9 +25,8 @@ export function Hero({ guest, entered }: { guest: string; entered: boolean }) {
     <header id="inicio" onMouseMove={(e) => setM({ x: e.clientX / window.innerWidth - 0.5, y: e.clientY / window.innerHeight - 0.5 })} className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-white via-hueso to-hielo/70 px-6 pb-24 pt-16 text-center">
       <Ambient butterflies={6} sparks={30} />
       <div className="absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] rounded-full bg-turquesa-soft/30 blur-3xl" style={{ transform: `translate(calc(-50% + ${m.x * 60}px), calc(-50% + ${m.y * 60}px))` }} aria-hidden />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center" style={{ transform: `translate(${m.x * -26}px, ${sy * 0.2}px)` }} aria-hidden>
-        <CoupleArt className="aspect-[400/520] h-[90vh] max-w-none opacity-[0.22]" />
-      </div>
+      {/* Video de fondo (reemplaza a la pareja de figuras) */}
+      <VideoFondo opacity={0.45} />
       <Petals />
       <svg className="pointer-events-none absolute inset-4 h-[calc(100%-2rem)] w-[calc(100%-2rem)] sm:inset-8 sm:h-[calc(100%-4rem)] sm:w-[calc(100%-4rem)]" aria-hidden>
         <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="6" fill="none" stroke="#1fb5ad" strokeOpacity="0.6" pathLength={1} strokeDasharray={1} strokeDashoffset={1} className={entered ? 'animate-draw' : ''} />
@@ -57,7 +57,7 @@ export function Hero({ guest, entered }: { guest: string; entered: boolean }) {
         <p className={`${rn} mt-4 font-display text-xl italic text-tinta/85`} style={{ '--d': '2s' } as CSSProperties}>{IGLESIA.time} de la mañana</p>
         <div className={`${rn} mt-8`} style={{ '--d': '2.2s' } as CSSProperties}><a href="#confirmar" className={btn}>Confirmar asistencia</a></div>
       </div>
-      <a href="#cuenta" aria-label="Desliza hacia abajo" className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center text-turquesa-deep"><span className="font-body text-xs tracking-[0.3em]">DESLIZA HACIA ABAJO</span><span className="animate-hint text-3xl">⌄</span></a>
+      <a href="#cuenta" aria-label="Desliza hacia abajo" className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center text-turquesa-deep"><span className="font-body text-xs tracking-[0.3em]">DESLIZA HACIA ABAJO</span><Icono name="abajo" dorado={false} className="animate-hint h-7 w-7" /></a>
     </header>
   )
 }
@@ -65,7 +65,7 @@ export function Hero({ guest, entered }: { guest: string; entered: boolean }) {
 /** Cinta con los nombres y la fecha en movimiento */
 export function Marquee() {
   const d = WEDDING.date
-  const t = `${WEDDING.novio} & ${WEDDING.novia}  ♥  ${d.getDate()} · ${d.getMonth() + 1} · ${d.getFullYear()}  ♥  `
+  const t = `${WEDDING.novio} & ${WEDDING.novia}   ·   ${d.getDate()} · ${d.getMonth() + 1} · ${d.getFullYear()}   ·   `
   return (
     <div className="overflow-hidden bg-turquesa-deep py-3 text-white" aria-hidden>
       <div className="marquee flex w-max whitespace-nowrap font-display text-2xl italic tracking-wider">
@@ -91,7 +91,7 @@ function MiniCalendar() {
           <div className="mt-4 grid grid-cols-7 gap-1 text-center font-body text-sm">
             {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((x, i) => <span key={i} className="py-1 text-tinta/70">{x}</span>)}
             {cells.map((c, i) => c === null ? <span key={i} /> : c === d.getDate() ? (
-              <span key={i} className="relative flex aspect-square animate-pulse-ring items-center justify-center rounded-full bg-turquesa font-semibold text-white shadow-lg">{c}<span className="absolute -right-1 -top-2 text-xs text-turquesa-deep">♥</span></span>
+              <span key={i} className="relative flex aspect-square animate-pulse-ring items-center justify-center rounded-full bg-turquesa font-semibold text-white shadow-lg">{c}<Icono name="corazon" className="absolute -right-2 -top-2.5 h-4 w-4" grosor={2} /></span>
             ) : <span key={i} className="flex aspect-square items-center justify-center text-tinta/85">{c}</span>)}
           </div>
         </div>
@@ -126,6 +126,7 @@ export function Countdown() {
 
 /* =====================================================================
    3. FRASE: los anillos se juntan a medida que bajas
+   (App.tsx usa la versión de Mejorado.tsx; esta queda como respaldo)
    ===================================================================== */
 export function Interlude() {
   const ref = useReveal<HTMLDivElement>()
@@ -192,7 +193,7 @@ export function Story() {
 
 /* =====================================================================
    5. LUGARES (con sus fotos) y MAPA
-   Fotos: src/assets/iglesia/  y  src/assets/salon/
+   Fotos: src/assets/iglesia*.jpg  y  src/assets/Cisne*.jpg
    ===================================================================== */
 type Foto = { src: string; label: string }
 
@@ -201,7 +202,7 @@ function LugarCard({ ev, fotos, carpeta, delay, from }: { ev: Ev; fotos: Foto[];
   return (
     <Reveal delay={delay} from={from}>
       <Tilt className={card}>
-        <div className="icon-pop animate-float mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-hielo/60 text-3xl">{ev.icon}</div>
+        <div className="icon-pop animate-float mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[#c9a24b]/50 bg-hielo/60"><Icono name={ev.icon} className="h-8 w-8" /></div>
         <h3 className="font-script text-4xl leading-tight text-turquesa-deep">{ev.title}</h3>
         <p className="mt-3 font-display text-lg italic text-tinta/85">{ev.date}</p>
         <p className="font-display text-5xl font-semibold">{ev.time}</p>
@@ -209,10 +210,10 @@ function LugarCard({ ev, fotos, carpeta, delay, from }: { ev: Ev; fotos: Foto[];
         {fotos.length > 0 ? (
           <button onClick={() => setOpen(0)} aria-label={`Ver fotos de ${ev.place}`} className="group relative mx-auto mt-4 block w-full overflow-hidden rounded-2xl shadow-lg">
             <img src={fotos[0].src} alt={ev.place} loading="lazy" referrerPolicy="no-referrer" className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            <span className="absolute bottom-2 right-2 rounded-full bg-black/55 px-3 py-1 font-body text-xs text-white backdrop-blur">📷 {fotos.length} {fotos.length === 1 ? 'foto' : 'fotos'}</span>
+            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-3 py-1 font-body text-xs text-white backdrop-blur"><Icono name="camara" dorado={false} className="h-3.5 w-3.5" /> {fotos.length} {fotos.length === 1 ? 'foto' : 'fotos'}</span>
           </button>
         ) : (
-          import.meta.env.DEV && <p className="mt-4 rounded-xl border border-dashed border-turquesa/50 p-3 font-body text-xs text-turquesa-deep">📷 Agrega enlaces de fotos en <code>{carpeta}</code></p>
+          import.meta.env.DEV && <p className="mt-4 rounded-xl border border-dashed border-turquesa/50 p-3 font-body text-xs text-turquesa-deep">Agrega fotos de este lugar en <code>{carpeta}</code></p>
         )}
         <a href={ev.map} target="_blank" rel="noreferrer" className={`${btn} mt-6`}>Ver en el mapa</a>
       </Tilt>
@@ -226,8 +227,8 @@ export function Details() {
     <Seccion className="paper bg-hueso px-6 py-24">
       <SectionTitle title="Dónde y cuándo" subtitle="Te esperamos con los brazos abiertos" />
       <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-        <LugarCard ev={IGLESIA} fotos={FOTOS_IGLESIA} carpeta="URLS_IGLESIA (Datos.ts)" delay={0} from="left" />
-        <LugarCard ev={SALON} fotos={FOTOS_SALON} carpeta="URLS_SALON (Datos.ts)" delay={150} from="right" />
+        <LugarCard ev={IGLESIA} fotos={FOTOS_IGLESIA} carpeta="src/assets (iglesia*.jpg)" delay={0} from="left" />
+        <LugarCard ev={SALON} fotos={FOTOS_SALON} carpeta="src/assets (Cisne*.jpg)" delay={150} from="right" />
       </div>
     </Seccion>
   )
@@ -235,7 +236,7 @@ export function Details() {
 
 function FotosLugar({ fotos, carpeta }: { fotos: Foto[]; carpeta: string }) {
   const [open, setOpen] = useState<number | null>(null)
-  if (!fotos.length) return import.meta.env.DEV ? <p className="border-t border-turquesa/20 p-4 text-center font-body text-xs text-turquesa-deep">📷 Agrega enlaces de fotos en <code>{carpeta}</code></p> : null
+  if (!fotos.length) return import.meta.env.DEV ? <p className="border-t border-turquesa/20 p-4 text-center font-body text-xs text-turquesa-deep">Agrega fotos de este lugar en <code>{carpeta}</code></p> : null
   return (
     <div className="border-t border-turquesa/20 p-5">
       <p className="mb-3 text-center font-display text-lg italic text-turquesa-deep">Fotos del lugar · toca para ampliar</p>
@@ -253,8 +254,8 @@ function FotosLugar({ fotos, carpeta }: { fotos: Foto[]; carpeta: string }) {
 
 export function Where() {
   const places = [
-    { key: 'iglesia', tab: 'Ceremonia', ev: IGLESIA, fotos: FOTOS_IGLESIA, carpeta: 'URLS_IGLESIA (Datos.ts)' },
-    { key: 'salon', tab: 'Recepción', ev: SALON, fotos: FOTOS_SALON, carpeta: 'URLS_SALON (Datos.ts)' },
+    { key: 'iglesia', tab: 'Ceremonia', ev: IGLESIA, fotos: FOTOS_IGLESIA, carpeta: 'src/assets (iglesia*.jpg)' },
+    { key: 'salon', tab: 'Recepción', ev: SALON, fotos: FOTOS_SALON, carpeta: 'src/assets (Cisne*.jpg)' },
   ]
   const [active, setActive] = useState(0)
   const p = places[active]
@@ -294,7 +295,7 @@ export function Schedule() {
         {SCHEDULE.map((s, i) => (
           <Reveal key={s.label} delay={(i % 4) * 100} from={froms[i % 4]}>
             <Tilt className="shine h-full rounded-2xl border border-turquesa/40 bg-white p-6 text-center shadow-lg shadow-turquesa-deep/5">
-              <div className="icon-pop animate-float text-4xl" style={{ animationDelay: `${i * 0.35}s` }}>{s.icon}</div>
+              <div className="icon-pop animate-float flex justify-center" style={{ animationDelay: `${i * 0.35}s` }}><Icono name={s.icon} className="h-10 w-10" /></div>
               <p className="mt-3 font-display text-3xl font-semibold text-turquesa-deep">{s.time}</p>
               <p className="mt-1 font-body text-sm text-tinta/85">{s.label}</p>
             </Tilt>
@@ -309,7 +310,7 @@ function PeopleCard({ title, icon, names, delay }: { title: string; icon: string
   return (
     <Reveal delay={delay} from="blur">
       <Tilt className={card}>
-        <div className="icon-pop animate-float mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-hielo/70 text-2xl">{icon}</div>
+        <div className="icon-pop animate-float mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#c9a24b]/50 bg-hielo/70"><Icono name={icon} className="h-7 w-7" /></div>
         <h3 className="font-script text-3xl leading-tight text-turquesa-deep">{title}</h3>
         <ul className="mt-4 space-y-2">{names.map((n) => <li key={n} className="font-display text-lg">{n}</li>)}</ul>
       </Tilt>
@@ -400,9 +401,9 @@ export function Bands() {
                 </button>
               ) : (
                 <div className={`flex ${alto} flex-col items-center justify-center rounded-3xl bg-gradient-to-br from-turquesa-soft via-turquesa to-turquesa-deep p-6 text-center shadow-2xl`}>
-                  <span className="text-5xl">🎶</span>
+                  <Icono name="musica" dorado={false} className="h-12 w-12 text-white" />
                   <p className="mt-3 font-display text-2xl italic text-white sm:text-3xl">{b.name}</p>
-                  {import.meta.env.DEV && <p className="mt-3 font-body text-xs text-white/85">Agrega el enlace de su foto en <code>BANDS (Datos.ts)</code></p>}
+                  {import.meta.env.DEV && <p className="mt-3 font-body text-xs text-white/85">Agrega la foto de este grupo en <code>BANDS (Datos.ts)</code></p>}
                 </div>
               )}
             </Reveal>
@@ -416,27 +417,9 @@ export function Bands() {
 
 /* =====================================================================
    8. REGALOS Y CONFIRMACIÓN
+   (App.tsx no muestra <Gifts /> por ahora; si quieres la mesa de regalos,
+   agrégala en App.tsx entre <Bands /> y <Rsvp />)
    ===================================================================== */
-export function Gifts() {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    try { await navigator.clipboard.writeText(WEDDING.account.number); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* sin portapapeles */ }
-  }
-  return (
-    <Seccion id="regalos" className="paper bg-hueso px-6 py-24">
-      <SectionTitle title="Mesa de regalos" subtitle="Tu presencia es nuestro mejor regalo. Si deseas hacernos uno, aquí está nuestra cuenta" />
-      <Reveal className="mx-auto max-w-md" from="rotate">
-        <Tilt className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-turquesa to-turquesa-deep p-8 text-white shadow-2xl">
-          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/25 blur-2xl" aria-hidden />
-          <p className="relative font-display text-xl italic text-white">{WEDDING.account.bank}</p>
-          <p className="relative mt-6 font-mono text-2xl tracking-wider">{WEDDING.account.number}</p>
-          <p className="relative mt-6 font-body text-sm text-white/80">{WEDDING.account.holder}</p>
-          <button onClick={copy} className="relative mt-6 rounded-full bg-white px-6 py-2.5 font-body text-sm font-medium text-turquesa-deep transition-all hover:bg-hielo">{copied ? 'Número copiado' : 'Copiar número de cuenta'}</button>
-        </Tilt>
-      </Reveal>
-    </Seccion>
-  )
-}
 
 export function Rsvp({ guest }: { guest: string }) {
   const [form, setForm] = useState({ name: guest, attending: 'si', guests: 1, menu: 'tradicional', message: '' })
@@ -516,7 +499,9 @@ export function Rsvp({ guest }: { guest: string }) {
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-b from-white to-hielo/70 px-6 pt-20 text-center">
+    <footer className="relative overflow-hidden bg-gradient-to-b from-white to-hielo/70 px-6 pb-44 pt-20 text-center">
+      {/* Video de fondo (reemplaza a la pareja de figuras) */}
+      <VideoFondo opacity={0.4} />
       <Ambient butterflies={4} sparks={24} />
       <Petals count={8} />
       <Reveal className="relative" from="blur">
@@ -525,7 +510,6 @@ export function Footer() {
         <p className="font-body text-sm text-tinta/80">{WEDDING.date.toLocaleDateString('es-BO', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
         <p className="mt-5 font-display text-2xl tracking-widest text-turquesa-deep">#{WEDDING.novio}Y{WEDDING.novia}</p>
       </Reveal>
-      <div className="relative mt-10 flex justify-center"><CoupleArt className="aspect-[400/520] h-72 opacity-90 sm:h-96" /></div>
     </footer>
   )
 }
